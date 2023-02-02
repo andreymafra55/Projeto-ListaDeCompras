@@ -96,6 +96,42 @@ public class ListaDeComprasDAO implements IPersistencia{
 		return listas;
 	}
 
+	
+	public List<ListaDeCompras> readMaterial(String mat) {
+		Connection con = databaseMySQL.getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		List<ListaDeCompras> listas = new ArrayList<>();
+		try {
+			pstm = con .prepareStatement("SELECT * FROM LISTA WHERE material LIKE ?;");
+			pstm.setString(1, "%"+mat+"%");
+			rs = pstm.executeQuery();
+			
+			while(rs.next()) {
+				ListaDeCompras lista = new ListaDeCompras();
+				lista.setId(rs.getInt("id"));
+				lista.setMaterial(rs.getString("material"));
+				lista.setQuantidade(rs.getString("quantidade"));
+				lista.setTipo(rs.getString("tipo"));
+				listas.add(lista);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				con.close();
+				pstm.close();
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return listas;
+	}
+
 	@Override
 	public void removerItem(ListaDeCompras l) {
 		try {

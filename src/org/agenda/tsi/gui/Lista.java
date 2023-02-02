@@ -43,6 +43,7 @@ public class Lista extends JFrame {
 	private JTextField QuantidadeTextField;
 	private JTextField TipoTextField;
 	private IConnectionDB databaseMySQL;
+	private JTextField PesquisatextField;
 
 	
 	public Lista() {
@@ -158,6 +159,20 @@ public class Lista extends JFrame {
 		});
 		btnNewButton.setBounds(16, 138, 134, 24);
 		contentPane.add(btnNewButton);
+		
+		PesquisatextField = new JTextField();
+		PesquisatextField.setBounds(454, 214, 114, 18);
+		contentPane.add(PesquisatextField);
+		PesquisatextField.setColumns(10);
+		
+		JButton btnPesquisar = new JButton("Pesquisar");
+		btnPesquisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				readJTableForMat(PesquisatextField.getText());
+			}
+		});
+		btnPesquisar.setBounds(344, 211, 98, 24);
+		contentPane.add(btnPesquisar);
 		btnAdicionarMaterial.addActionListener(new SalvarAction());
 	}
 	
@@ -215,6 +230,20 @@ public class Lista extends JFrame {
 		modelo.setNumRows(0);
 		ListaDeComprasDAO ldao = new ListaDeComprasDAO();
 		for(ListaDeCompras l:ldao.read()) {
+			modelo.addRow(new Object[] {
+					l.getId(),
+					l.getMaterial(),
+					l.getQuantidade(),
+					l.getTipo()
+			});
+		}
+	}
+	
+	public void readJTableForMat(String desc) {
+		DefaultTableModel modelo = (DefaultTableModel)table.getModel();
+		modelo.setNumRows(0);
+		ListaDeComprasDAO ldao = new ListaDeComprasDAO();
+		for(ListaDeCompras l:ldao.readMaterial(desc)) {
 			modelo.addRow(new Object[] {
 					l.getId(),
 					l.getMaterial(),

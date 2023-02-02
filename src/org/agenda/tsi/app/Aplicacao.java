@@ -1,30 +1,27 @@
 package org.agenda.tsi.app;
 
+import java.awt.EventQueue;
+
 import javax.swing.SwingUtilities;
 
 import org.agenda.tsi.gui.Lista;
+import org.agenda.tsi.gui.Register;
 import org.agenda.tsi.persistencia.ListaDeComprasDAO;
 
 
 public class Aplicacao {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
+		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				// TODO Auto-generated method stub
-				Lista l = new Lista();
-				l.setVisible(true);
+				try {
+					Register frame = new Register();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-			
 		});
-		
-		
-		//AgendaDAO.getInstance().adicionarItem(new Agenda(0, "Maria", "m@m", "81999999"));
 	}
 
 }
